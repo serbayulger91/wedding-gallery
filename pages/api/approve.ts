@@ -1,0 +1,12 @@
+import { connectToDatabase } from "@/utils/mongodb";
+import { ObjectId } from "mongodb";
+
+export default async function handler(req, res) {
+  const db = await connectToDatabase();
+  const { id } = req.query;
+  await db.collection("uploads").updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { approved: true } }
+  );
+  res.status(200).json({ success: true });
+}
